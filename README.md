@@ -456,7 +456,7 @@ En una terminal se port-forwardea el svc frontend que escucha por el puerto 80 [
 ````
 kubectl port-forward svc/frontend-service 8080:80
 ````
-Mientras que se expone mi localhost:8080 hacia internet con ayuda de ngrok.
+Mientras que se expone localhost:8080 hacia internet con ayuda de ngrok.
 
 ````
 ngrok http 8080
@@ -465,7 +465,7 @@ ngrok http 8080
   <img width="600" height="394" alt="image" src="https://github.com/user-attachments/assets/ba3a4725-7cf6-48b2-9f1c-2510037124bf" />
 </p>
 
-Habrás expuesto tu aplicación ante internet con ayuda de ngrok. 
+Habrás expuesto tu aplicación ante internet con ayuda de ngrok (emplear dirección ip provista por el tunel de ngrok). 
 <p align="center">
   <img width="600" height="407" alt="image" src="https://github.com/user-attachments/assets/1ee3cf15-388a-44f6-84b9-df1d6133695e" />
 </p>
