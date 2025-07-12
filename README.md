@@ -324,7 +324,7 @@ Se deben aplicar los cambios y generar el service y deployment.
 kubectl apply -f backend-deployment.yaml 
 ````
 
-## 3.2 BASE DE DATOS: 
+## 3.2 BASE DE DATOS 
 
 Para la base de datos, únicamente se genera el archivo **“mysql-deployment.yaml”**, debido a que no es necesaria la construcción de una imagen, en ella se emplean atributos como nombre de usuario y contraseña que deberán ser usados por el backend para su conexión con esta. ***Vease en el repositorio***.
 
@@ -334,7 +334,7 @@ Nuevamente, se aplican los cambios con ayuda de.
 kubectl apply -f mysql-deployment.yaml 
 ````
 
-## 3.3 FRONTEND:
+## 3.3 FRONTEND
 
 La estructura del frontend es la siguiente:
 <p align="center">
@@ -467,7 +467,7 @@ Habrás expuesto tu aplicación ante internet con ayuda de ngrok.
   <img width="600" height="407" alt="image" src="https://github.com/user-attachments/assets/1ee3cf15-388a-44f6-84b9-df1d6133695e" />
 </p>
 
-# 5. BIBLIOGRAFÍA:
+# 5. BIBLIOGRAFÍA
 
 CASTILLO, Mario. Crea tu Propio Cluster de Kubernetes: Instalación Paso a Paso con Kubeadm y VirtualBox. Cali: Youtube, 2024. Disponible en:  
 https://www.youtube.com/watch?v=2iCXmroXVXs&t=620s 
