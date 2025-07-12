@@ -426,7 +426,7 @@ Si todo se realizó de manera correcta el resultado deberá ser el siguiente.
   <img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/0176eb49-bf2f-4fc6-8786-2f3e241dbd3e" />
 </p>
 
-# 4.  DESPLIEGUE DE LA APLICACIÓN ANTE INTERNET CON AYUDA DEL TÚNEL DE NGROK 
+# 4. EXPOSICIÓN DE LA APLICACIÓN ANTE INTERNET CON AYUDA DEL TÚNEL DE NGROK 
 
 Para finalizar se realizará el despliegue ante internet de la aplicación construida con ayuda del clúster de Kubernetes. Para esto, se realizará la exposición del servicio del Frontend usando el tunel de ngrok.
 
