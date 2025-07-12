@@ -10,7 +10,9 @@ El presente repositorio busca:
 
 Espero que sea de su interés.
 
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+<p align="center">
+  <img src="https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif" alt="Alt Text" />
+</p>
 
 # 2. PROCESO DE INICIALIZACIÓN DEL CLUSTER. 
  
@@ -114,21 +116,25 @@ Se reinicia el servicio de containerd tras aplicar la configuración por defecto
 sudo systemctl restart containerd 
 sudo systemctl status containerd 
 ````
-<img width="1033" height="382" alt="image" src="https://github.com/user-attachments/assets/374717be-1f18-4fec-b19a-63d8457e9aed" />
-<br><br>
+<p align="center">
+<img width="1000" height="382" alt="image" src="https://github.com/user-attachments/assets/374717be-1f18-4fec-b19a-63d8457e9aed" />
+ </p>
+
+
 Una vez verificado que el servicio se encuentra corriendo, lo siguiente será deshabilitar swap de forma permanente, lo anterior se consigue con ayuda del comando: 
 
 ````
 sudo swapoff -a 
 ````
+
 Y posteriormente, para deshabilitar el swap de manera permanente se modifica el archivo ```/etc/fstab ````, comentando la línea que hace referencia al swap. Todo lo anterior con ayuda del siguiente comando:
 
 ````
 sudo nano /etc/fstab
 ````
-
-<img width="1391" height="360" alt="image" src="https://github.com/user-attachments/assets/737dc692-25b0-4ee3-b639-ead1875b42f2" />
-<br><br>
+<p align="center">
+   <img width="1000" height="360" alt="image" src="https://github.com/user-attachments/assets/737dc692-25b0-4ee3-b639-ead1875b42f2" />
+</p>
 
 Tras esto, son instaladas las dependencias requeridas para los kubenetes, estas son curl, ca-certificates, dnf-plugins-core, gnupg2. 
 
@@ -218,6 +224,9 @@ Si todo funciona de manera correcta, el siguiente comando debería mostrar todos
 ````
 kubectl get pods 
 ````
+<p align="center">
+  <img width="700" height="120" alt="image" src="https://github.com/user-attachments/assets/e6f03688-7151-4822-a57d-37fa2a3d4a80" />
+</p>
 
 
 
