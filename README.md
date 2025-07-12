@@ -80,7 +80,8 @@ cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
  
 Posteriormente, se prueba que estos módulos hayan sido cargados correctamente al entorno de containerd con ayuda de. 
 ``` 
-sudo modprobe <Nombre-del-modulo> 
+sudo modprobe overlay
+sudo modprobe br_netfilter 
 ``` 
 Luego, se establece la configuración necesaria para garantizar networking dentro de los Kubernetes con ayuda del siguiente comando. 
 
@@ -228,6 +229,80 @@ kubectl get pods
   <img width="700" height="120" alt="image" src="https://github.com/user-attachments/assets/e6f03688-7151-4822-a57d-37fa2a3d4a80" />
 </p>
 
+Puedes verificar la ip con la que se encuentran corriendo los nodos con ayuda del comando.
+````
+kubectl get pods -o wide
+````
+En caso de que los nodos se generen con la ip de otra interfaz que no sea host-only (En mi caso los nodos usaban la ip de la interfaz en NAT), añadiendo la ip correspondiente como --node-ip=<ip-de-la-interfaz> de la siguiente manera.
 
+````
+sudo vim /var/lib/kubelet/kubeadm-flags.env
+````
+<p align="center">
+    <img width="928" height="81" alt="image" src="https://github.com/user-attachments/assets/d81f6889-613b-4666-a486-6fd32bb8db1e" />
+</p>
+
+# 3.DESPLIEGUE DE UNA APLICACIÓN PROPIA CON AYUDA DE KUBERNETES Y CONTENEDORES
+
+## 3.1 BACKEND: 
+
+La estructura del backend es la siguiente.
+<p align="center">
+  <img width="928" height="57" alt="image" src="https://github.com/user-attachments/assets/46eb7d53-db53-4b20-a2cf-60493564748f" />
+</p>
+
+El archivo mvnw, no es archivo propio del repositorio, sino que es generado al momento de compilar la aplicación. Es por eso se debe descargar un compilador de java para Linux como puede ser SDKMAN. En el repositorio, el Backend ya se encuentra compilado pero si se requiere, la guia de instalación y compilación con ayuda de SDKMAN es mostrada a continuación.
+
+````
+# 1. Instalación
+curl -s "https://get.sdkman.io" | bash
+````
+````
+# 2. Carga SDKMAN en shell
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+````
+````
+# 3. Instalación de Java 21 (Correspondiente a la versión del proyecto)
+sdk install java 21-tem
+````
+````
+# 4. Establezco Java 21 como predeterminado
+sdk default java 21-tem
+````
+````
+# 5. Verificación
+java -version                      
+````
+Una vez agregado el compilador, se compila en la carpeta del Backend.
+````
+# 6. Compilación (Ejecutar en la carpeta del Backend)
+./mvnw clean package -DskipTests                 
+````
+Posteriormente, se genera el DockerFile (Presente también en el repositorio). Este DockerFile se pushea a un repositorio remoto (Recuerda iniciar sesión primero como sudo). Por cada cambio en la imagen se recomienda generar una nueva versión.
+````
+# Construcción de la imagen basado en el Dockerfile:
+sudo docker build -t <NombreImagen> .  
+````
+````
+# Tageo y posterior push de la imagen a DockerHub:
+sudo docker tag <NombreImagen> <NombreImagen>:<version>
+sudo docker push <NombreImagen>:<version>
+````
+
+### 3.1.1 Deployment y service 
+
+Antes de continuar, se definen algunos conceptos básicos en el contexto de Kubernetes.
+
+**Pods:**
+
+Son la unidad más pequeña de despliegue en Kubernetes. Un pod puede contener uno o varios contenedores que comparten almacenamiento, red y especificaciones de ejecución. 
+
+**Deployments:**
+
+Son objetos de Kubernetes que administran la creación y actualización de pods de manera declarativa. Permiten definir la cantidad de réplicas de un pod y manejar sus actualizaciones. 
+
+**Service:**
+
+Un Service en Kubernetes es un recurso que expone un conjunto de Pods y permite la comunicación estable entre ellos o con el exterior. 
 
 
