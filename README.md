@@ -118,7 +118,7 @@ sudo systemctl restart containerd
 sudo systemctl status containerd 
 ````
 <p align="center">
-<img width="1000" height="382" alt="image" src="https://github.com/user-attachments/assets/374717be-1f18-4fec-b19a-63d8457e9aed" />
+<img width="600" height="250" alt="image" src="https://github.com/user-attachments/assets/374717be-1f18-4fec-b19a-63d8457e9aed" />
  </p>
 
 
@@ -134,7 +134,7 @@ Y posteriormente, para deshabilitar el swap de manera permanente se modifica el 
 sudo nano /etc/fstab
 ````
 <p align="center">
-   <img width="1000" height="360" alt="image" src="https://github.com/user-attachments/assets/737dc692-25b0-4ee3-b639-ead1875b42f2" />
+   <img width="600" height="250" alt="image" src="https://github.com/user-attachments/assets/737dc692-25b0-4ee3-b639-ead1875b42f2" />
 </p>
 
 Tras esto, son instaladas las dependencias requeridas para los kubenetes, estas son curl, ca-certificates, dnf-plugins-core, gnupg2. 
@@ -226,7 +226,7 @@ Si todo funciona de manera correcta, el siguiente comando debería mostrar todos
 kubectl get pods 
 ````
 <p align="center">
-  <img width="700" height="120" alt="image" src="https://github.com/user-attachments/assets/e6f03688-7151-4822-a57d-37fa2a3d4a80" />
+  <img width="600" height="120" alt="image" src="https://github.com/user-attachments/assets/e6f03688-7151-4822-a57d-37fa2a3d4a80" />
 </p>
 
 Puedes verificar la ip con la que se encuentran corriendo los nodos con ayuda del comando.
@@ -244,11 +244,25 @@ sudo vim /var/lib/kubelet/kubeadm-flags.env
 
 # 3.DESPLIEGUE DE UNA APLICACIÓN PROPIA CON AYUDA DE KUBERNETES Y CONTENEDORES
 
+Antes de continuar, se definen algunos conceptos básicos en el contexto de Kubernetes.
+
+**Pods:**
+
+Son la unidad más pequeña de despliegue en Kubernetes. Un pod puede contener uno o varios contenedores que comparten almacenamiento, red y especificaciones de ejecución. 
+
+**Deployments:**
+
+Son objetos de Kubernetes que administran la creación y actualización de pods de manera declarativa. Permiten definir la cantidad de réplicas de un pod y manejar sus actualizaciones. 
+
+**Service:**
+
+Un Service en Kubernetes es un recurso que expone un conjunto de Pods y permite la comunicación estable entre ellos o con el exterior. 
+
 ## 3.1 BACKEND: 
 
 La estructura del backend es la siguiente.
 <p align="center">
-  <img width="928" height="57" alt="image" src="https://github.com/user-attachments/assets/46eb7d53-db53-4b20-a2cf-60493564748f" />
+  <img width="900" height="500" alt="image" src="https://github.com/user-attachments/assets/46eb7d53-db53-4b20-a2cf-60493564748f" />
 </p>
 
 El archivo mvnw, no es archivo propio del repositorio, sino que es generado al momento de compilar la aplicación. Es por eso se debe descargar un compilador de java para Linux como puede ser SDKMAN. En el repositorio, el Backend ya se encuentra compilado pero si se requiere, la guia de instalación y compilación con ayuda de SDKMAN es mostrada a continuación.
@@ -273,12 +287,11 @@ sdk default java 21-tem
 # 5. Verificación
 java -version                      
 ````
-Una vez agregado el compilador, se compila en la carpeta del Backend.
 ````
 # 6. Compilación (Ejecutar en la carpeta del Backend)
 ./mvnw clean package -DskipTests                 
 ````
-Posteriormente, se genera el DockerFile (Presente también en el repositorio). Este DockerFile se pushea a un repositorio remoto (Recuerda iniciar sesión primero como sudo). Por cada cambio en la imagen se recomienda generar una nueva versión.
+Posteriormente, se genera el DockerFile ***Vease en el repositorio***. Este DockerFile se pushea a un repositorio remoto (Recuerda iniciar sesión primero como sudo). Por cada cambio en la imagen se recomienda generar una nueva versión.
 ````
 # Construcción de la imagen basado en el Dockerfile:
 sudo docker build -t <NombreImagen> .  
@@ -291,18 +304,166 @@ sudo docker push <NombreImagen>:<version>
 
 ### 3.1.1 Deployment y service 
 
-Antes de continuar, se definen algunos conceptos básicos en el contexto de Kubernetes.
+Se genera un archivo llamado **”backend-deployment.yaml”** para generar un deployment y un service con ayuda de kubernetes. Se establecen atributos importantes como un environment (env) para realizar la conexión con la base de datos. ***Vease en el repositorio***. 
 
-**Pods:**
+Se debe cambiar la imagen de acuerdo con el nombre puesto al realizar el docker build.
 
-Son la unidad más pequeña de despliegue en Kubernetes. Un pod puede contener uno o varios contenedores que comparten almacenamiento, red y especificaciones de ejecución. 
+````
+<omitted>
+spec:
+      containers:
+        - name: backend
+          image: <tu-imagen>
+          ports:
+            - containerPort: 8080
+<omitted>
+````
 
-**Deployments:**
+Se deben aplicar los cambios y generar el service y deployment.
+````
+kubectl apply -f backend-deployment.yaml 
+````
 
-Son objetos de Kubernetes que administran la creación y actualización de pods de manera declarativa. Permiten definir la cantidad de réplicas de un pod y manejar sus actualizaciones. 
+## 3.2 BASE DE DATOS: 
 
-**Service:**
+Para la base de datos, únicamente se genera el archivo **“mysql-deployment.yaml”**, debido a que no es necesaria la construcción de una imagen, en ella se emplean atributos como nombre de usuario y contraseña que deberán ser usados por el backend para su conexión con esta. ***Vease en el repositorio***.
 
-Un Service en Kubernetes es un recurso que expone un conjunto de Pods y permite la comunicación estable entre ellos o con el exterior. 
+Nuevamente, se aplican los cambios con ayuda de.
 
+````
+kubectl apply -f mysql-deployment.yaml 
+````
+
+## 3.3 FRONTEND:
+
+La estructura del frontend es la siguiente:
+<p align="center">
+  <img width="800" height="150" alt="image" src="https://github.com/user-attachments/assets/465c06cd-9a05-4d5c-8bd2-6c96b8517e2f" />
+</p>
+
+Entre aspectos importantes del frontend encuentran el **Dockerfile** y **ngnix.conf** para el despliegue. ***Vease en el repositorio***
+
+Con respecto a **ngnix.conf** un aspecto clave a resaltar es el proxy-pass que permite enmascarar consulta de http. Los navegadores al usar https, bloquearan las consultas al backend en caso de que se omita este aspecto.
+
+````
+location /api/ {
+        proxy_pass http://192.168.56.11:30000/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+````
+
+Nuevamente, lo ideal es actualizar la versión de la imagen del contenedor. Para esto, se realiza.
+
+````
+# Construcción de la imagen basado en el Dockerfile:
+sudo docker build -t <NombreImagen> .  
+````
+
+````
+# Tageo y posterior push de la imagen a DockerHub:
+sudo docker tag <NombreImagen> <NombreImagen>:<version>
+sudo docker push <NombreImagen>:<version>
+````
+
+### 3.3.1 Deployment y Service:
+
+Se crea un archivo llamado ”frontend-deployment.yaml” para el despliegue del servicio ***Vease en el repositorio***.
+
+- Se crea un deployment para manejar los pods que son creados.
+- Se crea un service para exponer el servicio de frontend.
+
+No olvide usar la imagen construida con Docker build.
+
+````
+    spec:
+      containers:
+        - name: frontend
+          image: barcino/miapp-frontend:4.4
+          ports:
+          - containerPort: 80
+---
+````
+
+En la parte de service, es importante saber que significa cada puerto. A continuación, breves definiciones.
+
+•	ContainerPort: Puerto del contenedor, debe coincidir con el targetPort.
+•	port: Se refiere al puerto del service, por aquí se establece comunicación con otros pods de manera interna en el cluster.
+•	targetPort: Se refiere al puerto donde escucha la aplicación (Ngnix).
+•	NodePort: Puerto por donde escucha el nodo, accesible fuera del cluster.
+
+````
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: NodePort
+````
+
+Si no se especifica NodePort, Kubernetes escoge uno por defecto entre 30000 y 32767 (Como en este caso).
+
+Tras lo anterior, podremos acceder a la página desplegada usando la ip de uno de los nodos configurados en combinación con el puerto ‘NodePort’ definido en el service del frontend.
+<p align="center">
+  <img width="600" height="159" alt="image" src="https://github.com/user-attachments/assets/dd932b4f-03a8-4aba-8420-898696bd6878" />
+</p>
+En este caso, se utilizaría el puerto de 32324 (Servicio de frontend). No se va a acceder al backend (Puerto 30000), el uso de este puerto es solo para comunicación desde el frontend hacia la API.
+
+Si todo se realizó de manera correcta el resultado deberá ser el siguiente.
+
+<p align="center">
+  <img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/0176eb49-bf2f-4fc6-8786-2f3e241dbd3e" />
+</p>
+
+# 4. Despliegue de la aplicación ante internet con ayuda del túnel de ngrok
+
+Para finalizar se realizará el despliegue ante internet de la aplicación construida con ayuda del clúster de Kubernetes. Para esto, se realizará la exposición del servicio del Frontend usando el tunel de ngrok.
+
+Se instala ngrok con los siguientes comandos.
+
+````
+unzip ngrok-stable-linux-amd64.zip
+````
+````
+chmod +x ngrok
+````
+````
+sudo mv ngrok /usr/local/bin/
+````
+
+Y se configura un token de autenticación con ayuda de:
+
+````
+ngrok config add-authtoken <Token-generado-por-ngrok>
+````
+
+En una terminal se port-forwardea el svc frontend que escucha por el puerto 80 [ngnix] hacia localhost:8080.
+
+````
+kubectl port-forward svc/frontend-service 8080:80
+````
+Mientras que se expone mi localhost:8080 hacia internet con ayuda de ngrok.
+
+````
+ngrok http 8080
+````
+<p align="center">
+  <img width="600" height="394" alt="image" src="https://github.com/user-attachments/assets/ba3a4725-7cf6-48b2-9f1c-2510037124bf" />
+</p>
+
+Habrás expuesto tu aplicación ante internet con ayuda de ngrok. 
+<p align="center">
+  <img width="600" height="407" alt="image" src="https://github.com/user-attachments/assets/1ee3cf15-388a-44f6-84b9-df1d6133695e" />
+</p>
 
