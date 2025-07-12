@@ -392,13 +392,13 @@ No olvide usar la imagen construida con Docker build.
 
 En la parte de service, es importante saber que significa cada puerto. A continuación, breves definiciones.
 
-•	ContainerPort: Puerto del contenedor, debe coincidir con el targetPort.
+•	**ContainerPort:** Puerto del contenedor, debe coincidir con el targetPort.
 
-•	port: Se refiere al puerto del service, por aquí se establece comunicación con otros pods de manera interna en el cluster.
+•	**port:** Se refiere al puerto del service, por aquí se establece comunicación con otros pods de manera interna en el cluster.
 
-•	targetPort: Se refiere al puerto donde escucha la aplicación (Ngnix).
+•	**targetPort:** Se refiere al puerto donde escucha la aplicación (Ngnix).
 
-•	NodePort: Puerto por donde escucha el nodo, accesible fuera del cluster.
+•	**NodePort:** Puerto por donde escucha el nodo, accesible fuera del cluster.
 
 ````
 apiVersion: v1
