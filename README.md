@@ -242,7 +242,7 @@ sudo vim /var/lib/kubelet/kubeadm-flags.env
     <img width="928" height="81" alt="image" src="https://github.com/user-attachments/assets/d81f6889-613b-4666-a486-6fd32bb8db1e" />
 </p>
 
-# 3.DESPLIEGUE DE UNA APLICACIÓN PROPIA CON AYUDA DE KUBERNETES Y CONTENEDORES
+# 3. DESPLIEGUE DE UNA APLICACIÓN PROPIA CON AYUDA DE KUBERNETES Y CONTENEDORES
 
 Antes de continuar, se definen algunos conceptos básicos en el contexto de Kubernetes.
 
@@ -426,7 +426,7 @@ Si todo se realizó de manera correcta el resultado deberá ser el siguiente.
   <img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/0176eb49-bf2f-4fc6-8786-2f3e241dbd3e" />
 </p>
 
-# 4. Despliegue de la aplicación ante internet con ayuda del túnel de ngrok
+# 4.  DESPLIEGUE DE LA APLICACIÓN ANTE INTERNET CON AYUDA DEL TÚNEL DE NGROK 
 
 Para finalizar se realizará el despliegue ante internet de la aplicación construida con ayuda del clúster de Kubernetes. Para esto, se realizará la exposición del servicio del Frontend usando el tunel de ngrok.
 
@@ -467,3 +467,16 @@ Habrás expuesto tu aplicación ante internet con ayuda de ngrok.
   <img width="600" height="407" alt="image" src="https://github.com/user-attachments/assets/1ee3cf15-388a-44f6-84b9-df1d6133695e" />
 </p>
 
+# 5. BIBLIOGRAFÍA:
+
+CASTILLO, Mario. Crea tu Propio Cluster de Kubernetes: Instalación Paso a Paso con Kubeadm y VirtualBox. Cali: Youtube, 2024. Disponible en:  
+https://www.youtube.com/watch?v=2iCXmroXVXs&t=620s 
+ 
+CASTILLO, Mario. Laboratorio Práctico de Kubernetes: Deployment, ReplicaSet, Service, Secrets y ConfigMaps. Cali: Youtube, 2024. Disponible en:  
+https://www.youtube.com/watch?v=2iCXmroXVXs 
+ 
+Kubernetes. (s.f.). kubeadm init. Recuperado el 28 de marzo de 2025. Disponible en: https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init/ 
+
+<p align="center">
+<img src= "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTJ6aGNrZ2JwbHJkd2c1eDdhdGU5bDdsNDd0eGgyMGxiOG9rOTNqZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/W6dHvprT7oks6BpX5R/giphy.gif">
+</p>
